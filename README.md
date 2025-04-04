@@ -1,5 +1,3 @@
 # FinTrack API
 
-Java
-JWT
-mariaDB
+Java | JWT | mariaDB
