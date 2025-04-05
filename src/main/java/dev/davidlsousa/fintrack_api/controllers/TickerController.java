@@ -27,21 +27,21 @@ public class TickerController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createTicker(@RequestBody TickerRequestDTO tickerRequestDTO) {
+    public ResponseEntity<String> createTicker(@RequestBody TickerRequestDTO tickerDTO) {
 
-//        Ticker ticker = tickerInfoService.getInfoTicker(tickerRequestDTO.getTicker());
+//        Ticker ticker = tickerInfoService.getInfoTicker(tickerDTO.getTicker());
 //
 //        if (ticker == null) {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticker not found");
 //        }
 
-        double price = tickerRequestDTO.getTotalValuePurchased() / tickerRequestDTO.getNumberOfTicker();
+        double price = tickerDTO.getTotalValuePurchased() / tickerDTO.getNumberOfTicker();
 
         Ticker ticker = new Ticker(
-                tickerRequestDTO.getTicker(),
-                tickerRequestDTO.getTicker(),
-                tickerRequestDTO.getNumberOfTicker(),
-                tickerRequestDTO.getTotalValuePurchased(),
+                tickerDTO.getTicker(),
+                tickerDTO.getTicker(),
+                tickerDTO.getNumberOfTicker(),
+                tickerDTO.getTotalValuePurchased(),
                 price,
                 price,
                 price
@@ -50,5 +50,47 @@ public class TickerController {
         repository.save(ticker);
 
         return ResponseEntity.status(HttpStatus.OK).body("Ticker added");
+    }
+
+    @PutMapping
+    public  ResponseEntity<Ticker> updateTicker(@RequestBody TickerRequestDTO tickerDTO) {
+
+        Ticker ticker = repository.getByTicker(tickerDTO.getTicker());
+
+        int newNumberOfTickers = ticker.getNumberOfTickers() + tickerDTO.getNumberOfTicker();
+        double newTotalValuePurchased = ticker.getTotalValuePurchased() + tickerDTO.getTotalValuePurchased();
+        double newAveragePrice = (ticker.getTotalValuePurchased() + tickerDTO.getTotalValuePurchased()) / (ticker.getNumberOfTickers() + tickerDTO.getNumberOfTicker());
+
+        ticker.setNumberOfTickers(newNumberOfTickers);
+        ticker.setTotalValuePurchased(newTotalValuePurchased);
+        ticker.setAveragePrice(newAveragePrice);
+
+        double newPrice = tickerDTO.getTotalValuePurchased() / tickerDTO.getNumberOfTicker();
+
+        if (ticker.getHighestPrice() < newPrice) {
+            ticker.setHighestPrice(newPrice);
+        } else if (ticker.getLowestPrice() > newPrice) {
+            ticker.setLowestPrice(newPrice);
+        }
+
+        repository.save(ticker);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ticker);
+    }
+
+    @PutMapping("/sell")
+    public ResponseEntity<Ticker> sellTicker(@RequestBody TickerRequestDTO tickerDTO) {
+
+        Ticker ticker = repository.getByTicker(tickerDTO.getTicker());
+
+        int newNumberOfTickers = ticker.getNumberOfTickers() - tickerDTO.getNumberOfTicker();
+        double newTotalValuePurchased = ticker.getTotalValuePurchased() - tickerDTO.getTotalValuePurchased();
+
+        ticker.setNumberOfTickers(newNumberOfTickers);
+        ticker.setTotalValuePurchased(newTotalValuePurchased);
+
+        repository.save(ticker);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ticker);
     }
 }

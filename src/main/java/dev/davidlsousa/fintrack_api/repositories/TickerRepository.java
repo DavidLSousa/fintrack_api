@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TickerRepository extends JpaRepository<Ticker, String> {
+
+    Ticker getByTicker(String ticker);
 }

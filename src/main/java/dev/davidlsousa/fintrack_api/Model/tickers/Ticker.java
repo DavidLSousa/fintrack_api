@@ -3,12 +3,14 @@ package dev.davidlsousa.fintrack_api.Model.tickers;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity(name = "tickers")
 @Table(name = "tickers")
 @Getter
+@Setter
 @NoArgsConstructor
 public class Ticker {
 
