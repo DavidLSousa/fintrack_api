@@ -84,6 +84,11 @@ public class TickerController {
         Ticker ticker = repository.getByTicker(tickerDTO.getTicker());
 
         int newNumberOfTickers = ticker.getNumberOfTickers() - tickerDTO.getNumberOfTicker();
+        if (newNumberOfTickers == 0) {
+            repository.delete(ticker);
+            return ResponseEntity.status(HttpStatus.OK).body(null);
+        }
+
         double newTotalValuePurchased = ticker.getTotalValuePurchased() - tickerDTO.getTotalValuePurchased();
 
         ticker.setNumberOfTickers(newNumberOfTickers);
