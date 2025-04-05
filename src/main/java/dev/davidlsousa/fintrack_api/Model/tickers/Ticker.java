@@ -2,12 +2,14 @@ package dev.davidlsousa.fintrack_api.Model.tickers;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @Entity(name = "tickers")
 @Table(name = "tickers")
 @Getter
+@NoArgsConstructor
 public class Ticker {
 
     @Id
@@ -38,6 +40,19 @@ public class Ticker {
 //    @ElementCollection
 //    @CollectionTable(name = "ticker_history", joinColumns = @JoinColumn(name = "ticker_id"))
 //    private List<Map<String, Object>> history;
+
+    public Ticker(String nameTicker, String ticker, int numberOfTickers,
+                  double totalValuePurchased, double highestPrice,
+                  double lowestPrice, double averagePrice) {
+
+        this.nameTicker = nameTicker;
+        this.ticker = ticker;
+        this.setNumberOfTickers(numberOfTickers);
+        this.setTotalValuePurchased(totalValuePurchased);
+        this.setHighestPrice(highestPrice);
+        this.setLowestPrice(lowestPrice);
+        this.setAveragePrice(averagePrice);
+    }
 
     // Validações nos setters
     public void setNumberOfTickers(int numberOfTickers) {
