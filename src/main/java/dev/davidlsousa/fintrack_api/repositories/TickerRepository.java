@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface TickerRepository extends JpaRepository<Ticker, UUID> {
+public interface TickerRepository extends JpaRepository<Ticker, String> {
 }
