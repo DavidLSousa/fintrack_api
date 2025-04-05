@@ -1,13 +1,13 @@
-package dev.davidlsousa.fintrack_api.Model;
+package dev.davidlsousa.fintrack_api.Model.tickers;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Entity(name = "tickers")
 @Table(name = "tickers")
+@Getter
 public class Ticker {
 
     @Id
@@ -15,13 +15,13 @@ public class Ticker {
     private UUID id;
 
     @Column(nullable = false)
-    private String nameTicket;
+    private String nameTicker;
 
     @Column(nullable = false, unique = true)
-    private String ticket;
+    private String ticker;
 
     @Column(nullable = false)
-    private int numberOfTickets;
+    private int numberOfTickers;
 
     @Column(nullable = false)
     private double totalValuePurchased;
@@ -36,15 +36,15 @@ public class Ticker {
     private double averagePrice;
 
 //    @ElementCollection
-//    @CollectionTable(name = "ticket_history", joinColumns = @JoinColumn(name = "ticket_id"))
+//    @CollectionTable(name = "ticker_history", joinColumns = @JoinColumn(name = "ticker_id"))
 //    private List<Map<String, Object>> history;
 
     // Validações nos setters
-    public void setNumberOfTickets(int numberOfTickets) {
-        if (numberOfTickets <= 0) {
-            throw new IllegalArgumentException("O número de tickets deve ser maior que 0");
+    public void setNumberOfTickers(int numberOfTickers) {
+        if (numberOfTickers <= 0) {
+            throw new IllegalArgumentException("O número de tickers deve ser maior que 0");
         }
-        this.numberOfTickets = numberOfTickets;
+        this.numberOfTickers = numberOfTickers;
     }
 
     public void setTotalValuePurchased(double totalValuePurchased) {
