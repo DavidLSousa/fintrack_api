@@ -28,7 +28,7 @@ public class TickerController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createTicker(@RequestBody TickerRequestDTO tickerDTO) {
+    public ResponseEntity<String> createTickers(@RequestBody List<TickerRequestDTO> tickersDTO) {
 
 //        Ticker ticker = tickerInfoService.getInfoTicker(tickerDTO.getTicker());
 //
@@ -36,19 +36,21 @@ public class TickerController {
 //            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Ticker not found");
 //        }
 
-        double price = tickerDTO.getTotalValuePurchased() / tickerDTO.getNumberOfTicker();
+        for (TickerRequestDTO dto : tickersDTO) {
+            double price = dto.getTotalValuePurchased() / dto.getNumberOfTicker();
 
-        Ticker ticker = new Ticker(
-                tickerDTO.getTicker(),
-                tickerDTO.getTicker(),
-                tickerDTO.getNumberOfTicker(),
-                tickerDTO.getTotalValuePurchased(),
-                price,
-                price,
-                price
-        );
+            Ticker ticker = new Ticker(
+                    dto.getTicker(),
+                    dto.getTicker(),
+                    dto.getNumberOfTicker(),
+                    dto.getTotalValuePurchased(),
+                    price,
+                    price,
+                    price
+            );
 
-        repository.save(ticker);
+            repository.save(ticker);
+        }
 
         return ResponseEntity.status(HttpStatus.OK).body("Ticker added");
     }
