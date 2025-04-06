@@ -48,8 +48,8 @@ public class TickerInfoAdapter implements TickerInfoInterface {
 
     private Ticker fetchBrapiBrazil(String ticker) {
         // Implementar chamada real à API
-//        ("https://brapi.dev/api/v2/crypto?coin=%s?currency=BRL?token=noonhHjuNdxVYuPANVgYk4", ticker); // Cripto
-        String url = String.format("https://brapi.dev/api/quote/%s?token=noonhHjuNdxVYuPANVgYk4", ticker); // BRL
+//        ("https://brapi.dev/api/v2/crypto?coin=%s?currency=BRL?token=${MEU_TOKEN}", ticker); // Cripto
+        String url = String.format("https://brapi.dev/api/quote/%s?token=${MEU_TOKEN}", ticker); // BRL
 
         ResponseEntity<Ticker> res = restTemplate.getForEntity(url, Ticker.class);
         return res.getBody();
