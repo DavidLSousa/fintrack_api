@@ -37,6 +37,13 @@ public class TickerController {
 //        }
 
         for (TickerRequestDTO dto : tickersDTO) {
+
+            Ticker tickerDB = repository.getByTicker(dto.getTicker());
+            if (tickerDB != null) {
+                updateTicker(dto, tickerDB);
+                continue;
+            }
+
             double price = dto.getTotalValuePurchased() / dto.getNumberOfTicker();
 
             Ticker ticker = new Ticker(
@@ -54,11 +61,7 @@ public class TickerController {
 
         return ResponseEntity.status(HttpStatus.OK).body("Ticker added");
     }
-
-    @PutMapping
-    public  ResponseEntity<Ticker> updateTicker(@RequestBody TickerRequestDTO tickerDTO) {
-
-        Ticker ticker = repository.getByTicker(tickerDTO.getTicker());
+    private void updateTicker(TickerRequestDTO tickerDTO, Ticker ticker) {
 
         int newNumberOfTickers = ticker.getNumberOfTickers() + tickerDTO.getNumberOfTicker();
         double newTotalValuePurchased = ticker.getTotalValuePurchased() + tickerDTO.getTotalValuePurchased();
@@ -77,11 +80,9 @@ public class TickerController {
         }
 
         repository.save(ticker);
-
-        return ResponseEntity.status(HttpStatus.OK).body(ticker);
     }
 
-    @PutMapping("/sell")
+    @PutMapping
     public ResponseEntity<Ticker> sellTicker(@RequestBody TickerRequestDTO tickerDTO) {
 
         Ticker ticker = repository.getByTicker(tickerDTO.getTicker());
